@@ -9,11 +9,16 @@ const Munros = function (url) {
 Munros.prototype.getData = function () {
   const requestHelper = new RequestHelper(this.url);
   requestHelper.get().then((data) => {
-    this.munros = data;
-    console.log(this.munros);
+    this.handleData(data);
   }).catch((err) => {
     console.error(err);
   })
+};
+
+Munros.prototype.handleData = function (data) {
+  this.munros = data;
+  // console.log(this.munros);
+  PubSub.publish('Munros:data-ready', this.munros);
 };
 
 
